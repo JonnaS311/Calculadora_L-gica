@@ -13,8 +13,11 @@ class Calculadora:
         for i in range(4):
             lista.append([p[i], q[i]])
             try:
-                lista[i].append(eval(f'{expresion}'))
-                result.append(eval(f'{expresion}'))
+                if expresion.isdigit() == False:
+                    lista[i].append(eval(f'{expresion}'))
+                    result.append(eval(f'{expresion}'))
+                else:
+                    return "ALGO ANDA MAL...", 0
             except: return "ALGO ANDA MAL...", 0
 
         return lista,result
@@ -30,10 +33,13 @@ class Calculadora:
         for i in range(8):
             lista.append([p[i], q[i],w[i]])
             try:
-                lista[i].append(eval(f'{expresion}'))
-                result.append(eval(f'{expresion}'))
-            except:
-                return "ALGO ANDA MAL...", 0
+
+                if expresion.isdigit() == False:
+                    lista[i].append(eval(f'{expresion}'))
+                    result.append(eval(f'{expresion}'))
+                else:
+                    return "ALGO ANDA MAL...", 0
+            except: return "ALGO ANDA MAL...", 0
 
         return lista, result
 

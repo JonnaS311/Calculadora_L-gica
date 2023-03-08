@@ -36,11 +36,12 @@ def main(page: ft.Page):
             datos,result = cal.dos_proposiciones(campo.value)
             row = []
             if datos != "ALGO ANDA MAL...":
+                tabla.visible = True
                 resultado.value = f'el resultado de hacer la operación: {campo.value} es una {cal.formula_bien_formulada(result)}'
                 for i in range(len(datos)):
                     fila = []
                     for j in datos[i]:
-                        fila.append(ft.DataCell(ft.Text(j)))
+                        fila.append(ft.DataCell(ft.Text(j,size=15)))
                     if i%2==0:
                         row.append(ft.DataRow(fila,color="#F2EEB3"))
                     else:
@@ -56,12 +57,13 @@ def main(page: ft.Page):
             datos, result = cal.tres_proposiciones(campo.value)
             row = []
             if datos != "ALGO ANDA MAL...":
+                tabla.visible = True
                 resultado.value = f'el resultado de hacer la operación: {campo.value} es una {cal.formula_bien_formulada(result)}'
                 for i in range(len(datos)):
                     fila = []
 
                     for j in datos[i]:
-                        fila.append(ft.DataCell(ft.Text(j)))
+                        fila.append(ft.DataCell(ft.Text(j,size=15)))
 
                     if i % 2 == 0:
                         row.append(ft.DataRow(fila, color="#F2EEB3"))
@@ -75,7 +77,8 @@ def main(page: ft.Page):
         page.update()
 
 
-    campo = ft.TextField(label="Underlined", border="UNDERLINE", hint_text="Expresión Lógica", border_color="#4d8f81",width=500)
+    campo = ft.TextField(label="Expresión Lógica...",label_style=ft.TextStyle(color="#1E3833",weight=ft.FontWeight.W_500),
+                         hint_text="Ingresa una expresión, ejemplo: p and q", border_color="#4d8f81",width=500)
     tabla = ft.DataTable(
         columns=[
             ft.DataColumn(ft.Text("P",color="#FFFBE4")),
@@ -83,30 +86,46 @@ def main(page: ft.Page):
             ft.DataColumn(ft.Text("SALIDA",color="#FFFBE4")),
         ],
         rows=[],
-        border=ft.border.all(2, "#7ABF92"),
         border_radius= ft.border_radius.BorderRadius(topRight=10,
                                 topLeft=10,bottomLeft=10,bottomRight=10),
+        visible=False
         )
-    operar = ft.ElevatedButton("Operar 🧠", on_click=operar)
+    operar = ft.ElevatedButton("Operar ✍️", on_click=operar,
+                               style=ft.ButtonStyle(color={ft.MaterialState.DEFAULT: "#1E3833"},
+                                                    bgcolor={ft.MaterialState.DEFAULT: "#F22E62"},
+                                                    overlay_color="#C72651", shape=ft.RoundedRectangleBorder(radius=10))                               )
     resultado = ft.Text("Aquí descubriras si es una Tautología una Contradicción o una Contingencia 🤔",
-                text_align=ft.TextAlign.CENTER,color="#1E3833")
+                text_align=ft.TextAlign.CENTER,color="#1E3833",size=16)
     botones = ft.Row(controls=[
-        ft.ElevatedButton("Disyunción",on_click=dis),
-        ft.ElevatedButton("Conjunción",on_click=con),
-        ft.ElevatedButton("Negación",on_click=neg),
-        ft.ElevatedButton("Disyunción exclusiva",on_click=disE)
+        ft.ElevatedButton("Disyunción",on_click=dis,
+                          style=ft.ButtonStyle(color={ft.MaterialState.DEFAULT:"#1E3833"},
+                                               bgcolor={ft.MaterialState.DEFAULT: "#81C99A"},
+                                               overlay_color="#72B389",shape=ft.RoundedRectangleBorder(radius=10))),
+        ft.ElevatedButton("Conjunción",on_click=con,
+                          style=ft.ButtonStyle(color={ft.MaterialState.DEFAULT:"#1E3833"},
+                                               bgcolor={ft.MaterialState.DEFAULT: "#81C99A"},
+                                               overlay_color="#72B389",shape=ft.RoundedRectangleBorder(radius=10))),
+        ft.ElevatedButton("Negación",on_click=neg,
+                          style=ft.ButtonStyle(color={ft.MaterialState.DEFAULT:"#1E3833"},
+                                               bgcolor={ft.MaterialState.DEFAULT: "#81C99A"},
+                                               overlay_color="#72B389",shape=ft.RoundedRectangleBorder(radius=10))),
+        ft.ElevatedButton("Disyunción exclusiva",on_click=disE,
+                          style=ft.ButtonStyle(color={ft.MaterialState.DEFAULT:"#1E3833"},
+                                               bgcolor={ft.MaterialState.DEFAULT: "#81C99A"},
+                                               overlay_color="#72B389",shape=ft.RoundedRectangleBorder(radius=10)))
     ],wrap=True,alignment=ft.MainAxisAlignment.CENTER, width=400)
 
-    opcion = ft.RadioGroup(content=ft.Column([
-            ft.Radio(value="dos", label="2 proposiciones", fill_color="#4d8f81"),
-            ft.Radio(value="tres", label="3 proposiciones", fill_color="#4d8f81")]))
+    opcion = ft.RadioGroup(content=ft.Row([
+             ft.Radio(value="dos", label="2 proposiciones (p q)", fill_color="#4d8f81",expand=True),
+             ft.Radio(value="tres", label="3 proposiciones (p q w)", fill_color="#4d8f81",expand=True)]))
 
-    container1 = ft.Container(content=tabla,expand=True, bgcolor="#C42550",padding=10,
+
+    container1 = ft.Container(content=tabla,expand=True, bgcolor="#3C6E60",padding=100,
                                 border_radius=ft.border_radius.BorderRadius(topRight=20,
                                 topLeft=0,bottomLeft=0,bottomRight=20),height=hei-36)
-    container2 = ft.Column(controls=[opcion
-        ,
-        ft.Text("Ingrese la expresión a evaluar",text_align=ft.TextAlign.CENTER,weight=ft.FontWeight.BOLD,color="#1E3833"),
+    container2 = ft.Column(controls=[ft.Container(opcion,margin=50),
+        ft.Text("Ingrese la expresión a evaluar",text_align=ft.TextAlign.CENTER,weight=ft.FontWeight.BOLD,
+                color="#1E3833",size=16),
         campo,
         botones,
         resultado,
